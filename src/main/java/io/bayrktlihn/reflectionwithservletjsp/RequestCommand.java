@@ -11,7 +11,7 @@ import java.lang.reflect.Method;
 @Getter
 @Setter
 @NoArgsConstructor
-public class RequestHandlerCommand {
+public class RequestCommand {
 
     private Object controller;
     private Method toBeInvokedMethod;

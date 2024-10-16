@@ -26,15 +26,15 @@ public class DispathcherServlet extends HttpServlet {
 
         ServletContext servletContext = getServletContext();
 
-        List<RequestHandlerCommand> requestHandlerCommands = (List<RequestHandlerCommand>) servletContext.getAttribute("requestHandlerCommands");
+        List<RequestCommand> requestCommands = (List<RequestCommand>) servletContext.getAttribute("requestHandlerCommands");
 
-        Optional<RequestHandlerCommand> requestHandlerCommandOptional = requestHandlerCommands.stream().filter(item -> item.getPath().equals(req.getPathInfo()) && requestMethod.equals(item.getRequestMethod())).findFirst();
+        Optional<RequestCommand> requestHandlerCommandOptional = requestCommands.stream().filter(item -> item.getPath().equals(req.getPathInfo()) && requestMethod.equals(item.getRequestMethod())).findFirst();
 
         if(requestHandlerCommandOptional.isPresent()) {
             try {
-                RequestHandlerCommand requestHandlerCommand = requestHandlerCommandOptional.get();
-                Object controller = requestHandlerCommand.getController();
-                Method method = requestHandlerCommand.getToBeInvokedMethod();
+                RequestCommand requestCommand = requestHandlerCommandOptional.get();
+                Object controller = requestCommand.getController();
+                Method method = requestCommand.getToBeInvokedMethod();
                 method.invoke(controller, req, resp);
             } catch (Exception e) {
                 throw new RuntimeException(e);

@@ -35,7 +35,7 @@ public class ServletContextListenerImpl implements ServletContextListener {
 
         Set<Object> controllers = new HashSet<>();
 
-        List<RequestHandlerCommand> requestHandlerCommands = new ArrayList<>();
+        List<RequestCommand> requestCommands = new ArrayList<>();
 
 
         for (Class<?> clazz : typesAnnotatedWith) {
@@ -55,12 +55,12 @@ public class ServletContextListenerImpl implements ServletContextListener {
                     RequestMapping methodRequestMapping = method.getDeclaredAnnotation(RequestMapping.class);
                     String fullPath = baseUrl + methodRequestMapping.path();
 
-                    RequestHandlerCommand e = new RequestHandlerCommand();
+                    RequestCommand e = new RequestCommand();
                     e.setPath(fullPath);
                     e.setController(o);
                     e.setToBeInvokedMethod(method);
                     e.setRequestMethod(methodRequestMapping.method());
-                    requestHandlerCommands.add(e);
+                    requestCommands.add(e);
                 }
             }
 
@@ -69,7 +69,7 @@ public class ServletContextListenerImpl implements ServletContextListener {
 
         ServletContext servletContext = sce.getServletContext();
 
-        servletContext.setAttribute("requestHandlerCommands", requestHandlerCommands);
+        servletContext.setAttribute("requestHandlerCommands", requestCommands);
     }
 
     private static Object addIfNull(Class<?> clazz, Object o, Set<Object> controllers) {
