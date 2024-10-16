@@ -24,9 +24,6 @@ public class ServletContextListenerImpl implements ServletContextListener {
     public void contextInitialized(ServletContextEvent sce) {
         ServletContextListener.super.contextInitialized(sce);
 
-        ServletContext servletContext2 = sce.getServletContext();
-
-
         ConfigurationBuilder configuration = new ConfigurationBuilder();
         configuration.setUrls(ClasspathHelper.forPackage("io.bayrktlihn.reflectionwithservletjsp"));
         configuration.addScanners(Scanners.SubTypes.filterResultsBy(s -> true), Scanners.TypesAnnotated,
