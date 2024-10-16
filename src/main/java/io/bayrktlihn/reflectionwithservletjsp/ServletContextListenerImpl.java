@@ -61,7 +61,8 @@ public class ServletContextListenerImpl implements ServletContextListener {
                     RequestHandlerCommand e = new RequestHandlerCommand();
                     e.setPath(fullPath);
                     e.setController(o);
-                    e.setMethod(method);
+                    e.setToBeInvokedMethod(method);
+                    e.setRequestMethod(methodRequestMapping.method());
                     requestHandlerCommands.add(e);
                 }
             }

@@ -1,5 +1,6 @@
 package io.bayrktlihn.reflectionwithservletjsp;
 
+import io.bayrktlihn.reflectionwithservletjsp.enums.RequestMethod;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,7 +14,8 @@ import java.lang.reflect.Method;
 public class RequestHandlerCommand {
 
     private Object controller;
-    private Method method;
+    private Method toBeInvokedMethod;
+    private RequestMethod requestMethod;
     private String path;
 
 }

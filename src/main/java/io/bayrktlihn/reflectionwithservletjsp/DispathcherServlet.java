@@ -1,5 +1,6 @@
 package io.bayrktlihn.reflectionwithservletjsp;
 
+import io.bayrktlihn.reflectionwithservletjsp.enums.RequestMethod;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -18,22 +19,22 @@ public class DispathcherServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        handle(req, resp);
+        handle(req, resp, RequestMethod.GET);
     }
 
-    private void handle(HttpServletRequest req, HttpServletResponse resp) {
+    private void handle(HttpServletRequest req, HttpServletResponse resp, RequestMethod requestMethod) {
 
         ServletContext servletContext = getServletContext();
 
         List<RequestHandlerCommand> requestHandlerCommands = (List<RequestHandlerCommand>) servletContext.getAttribute("requestHandlerCommands");
 
-        Optional<RequestHandlerCommand> requestHandlerCommandOptional = requestHandlerCommands.stream().filter(item -> item.getPath().equals(req.getPathInfo())).findFirst();
+        Optional<RequestHandlerCommand> requestHandlerCommandOptional = requestHandlerCommands.stream().filter(item -> item.getPath().equals(req.getPathInfo()) && requestMethod.equals(item.getRequestMethod())).findFirst();
 
         if(requestHandlerCommandOptional.isPresent()) {
             try {
                 RequestHandlerCommand requestHandlerCommand = requestHandlerCommandOptional.get();
                 Object controller = requestHandlerCommand.getController();
-                Method method = requestHandlerCommand.getMethod();
+                Method method = requestHandlerCommand.getToBeInvokedMethod();
                 method.invoke(controller, req, resp);
             } catch (Exception e) {
                 throw new RuntimeException(e);
